@@ -111,7 +111,7 @@ class AbstractGame(ABC):
 class SimpleGame(AbstractGame):
     """Игра с магазином, сумками ресурсов и условием проигрыша."""
 
-    START_COINS = 50
+    START_COINS = 100
 
     def __init__(
         self,

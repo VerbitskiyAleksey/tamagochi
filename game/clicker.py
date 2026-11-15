@@ -27,7 +27,7 @@ class AbstractClicker(ABC):
 class SimpleRandomClicker(AbstractClicker):
     """Кликер, который за клик даёт случайное количество монет."""
 
-    def __init__(self, min_income: int, max_income: int) -> None:
+    def __init__(self, min_income: 10, max_income: 20) -> None:
         """
         Создать кликер с диапазоном дохода за клик.
 

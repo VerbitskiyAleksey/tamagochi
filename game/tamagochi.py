@@ -86,6 +86,11 @@ class SimpleTamagochi(AbstractTamagochi):
     MIN_STAT = 0
     MAX_STAT = 100
 
+    START_HUNGER = 40
+    START_FATIGUE = 20
+    START_HP = 80
+    START_ENERGY = 60
+
     HUNGER_PER_TICK = 5
     FATIGUE_PER_TICK = 3
     ENERGY_PER_TICK = 2
@@ -116,10 +121,10 @@ class SimpleTamagochi(AbstractTamagochi):
         :param name: имя питомца
         """
         self._name = name
-        self._hunger = 20
-        self._fatigue = 10
-        self._hp = self.MAX_STAT
-        self._energy = self.MAX_STAT
+        self._hunger = self.START_HUNGER
+        self._fatigue = self.START_FATIGUE
+        self._hp = self.START_HP
+        self._energy = self.START_ENERGY
         self._sick = False
 
     @property
