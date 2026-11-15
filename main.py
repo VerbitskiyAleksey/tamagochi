@@ -1,5 +1,3 @@
-"""Точка входа в игру «Тамагочи-кликер»."""
-
 from game.clicker import SimpleRandomClicker
 from game.game import SimpleGame
 from game.models import Food, Medicine
