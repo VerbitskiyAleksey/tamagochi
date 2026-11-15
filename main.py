@@ -6,7 +6,7 @@ from game.models import Food, Medicine
 from game.tamagochi import SimpleTamagochi
 
 
-def main() -> None:
+def start() -> None:
     """Запустить событийный цикл игры в консоли."""
     all_food = [
         Food(name='Бургер', satiety=20, price=40),
@@ -84,4 +84,4 @@ def main() -> None:
 
 
 if __name__ == '__main__':
-    main()
+    start()
