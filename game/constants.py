@@ -47,11 +47,13 @@ STATUS_TEMPLATE = (
     'Статус: голод {hunger}, усталость {fatigue}, здоровье {hp}, '
     'энергия {energy}, монет {coins}'
 )
-SICK_WARNING = '\n'.join((
+SICK_WARNING_LINES = (
     '=======Тамагочи болеет======',
     '=======Отдых действует менее эффективно======',
-))
-MENU = '\n'.join((
+)
+SICK_WARNING = '\n'.join(SICK_WARNING_LINES)
+
+MENU_ITEMS = (
     '1. Пойти на работу',
     '2. Купить еду',
     '3. Купить лекарство',
@@ -60,7 +62,8 @@ MENU = '\n'.join((
     '6. Играть',
     '7. Отдых',
     '0. Выход',
-))
+)
+MENU = '\n'.join(MENU_ITEMS)
 ACTION_PROMPT = 'Выберите действие: '
 ITEM_PROMPT = 'Номер (0 — отмена): '
 
