@@ -1,84 +1,76 @@
+"""Точка входа в игру «Тамагочи-кликер»."""
+
+from game import constants as cfg
 from game.clicker import SimpleRandomClicker
+from game.exceptions import GameError, TamagochiIsGone
 from game.game import SimpleGame
 from game.models import Food, Medicine
 from game.tamagochi import SimpleTamagochi
 
+ALL_FOOD = [
+    Food(name='Бургер', satiety=20, price=40),
+    Food(name='Салат', satiety=10, price=20),
+    Food(name='Яблоко', satiety=10, price=15),
+]
+ALL_MEDICINE = [
+    Medicine(name='Ибупрофен', price=30, heal_hp=20, number_of_uses=2),
+]
+
 
 def main() -> None:
     """Запустить событийный цикл игры в консоли."""
-    all_food = [
-        Food(name='Бургер', satiety=20, price=40),
-        Food(name='Салат', satiety=10, price=20),
-        Food(name='Яблоко', satiety=10, price=15),
-    ]
-    all_medicine = [
-        Medicine(name='Ибупрофен', price=30, heal_hp=20, number_of_uses=2),
-    ]
-
-    tamagochi = SimpleTamagochi(name='Бублик')
-    clicker = SimpleRandomClicker(10, 20)
+    tamagochi = SimpleTamagochi()
+    clicker = SimpleRandomClicker()
     game = SimpleGame(
-        tamagochi, clicker, all_food=all_food, all_medicine=all_medicine
+        tamagochi, clicker, all_food=ALL_FOOD, all_medicine=ALL_MEDICINE
     )
 
-    print('Добро пожаловать в тамагочи-кликер!')
+    print(cfg.WELCOME_MESSAGE)
     output = ''
 
     while True:
-        print('\n' + '=' * 45)
-        print(output)
-        print(f'Сумка с едой: {game.food}')
-        print(f'Сумка с лекарствами: {game.medicine}')
-
-        status = game.get_status()
-        print(
-            f"\nСтатус: голод {status['hunger']}, "
-            f"усталость {status['fatigue']}, здоровье {status['hp']}, "
-            f"энергия {status['energy']}, монет {status['coins']}"
-        )
-
-        if not game.tamagochi.is_alive():
-            print('\nПитомец погиб. Игра окончена.')
-            break
-
-        if game.tamagochi.is_sick():
-            print('=======Тамагочи болеет======')
-            print('=======Отдых действует менее эффективно======')
-
-        print('1. Пойти на работу')
-        print('2. Купить еду')
-        print('3. Купить лекарство')
-        print('4. Покормить')
-        print('5. Вылечить')
-        print('6. Играть')
-        print('7. Отдых')
-        print('0. Выход')
-
+        print('\n'.join((
+            cfg.SEPARATOR,
+            output,
+            cfg.BAG_TEMPLATE.format(food=game.food, medicine=game.medicine),
+            cfg.STATUS_TEMPLATE.format(**game.get_status()),
+            cfg.SICK_WARNING if game.tamagochi.is_sick() else '',
+            cfg.MENU,
+        )))
         output = ''
-        match input('Выберите действие: '):
-            case '1':
-                income = game.work()
-                output = f'Вы заработали {income} монет'
-                game.tamagochi.update()
-            case '2':
-                game.buy_food()
-            case '3':
-                game.buy_medicine()
-            case '4':
-                game.feed_tamagochi()
-            case '5':
-                game.heal_tamagochi()
-            case '6':
-                game.play_with_tamagochi()
-                output = 'Вы поиграли с питомцем'
-            case '7':
-                game.rest_tamagochi()
-                output = 'Питомец отдохнул'
-            case '0':
-                print('До встречи!')
-                break
-            case _:
-                output = 'Неверная команда'
+        try:
+            match input(cfg.ACTION_PROMPT):
+                case '1':
+                    output = cfg.WORK_TEMPLATE.format(income=game.work())
+                    game.tamagochi.update()
+                case '2':
+                    game.buy_food()
+                    output = cfg.FOOD_BOUGHT_MESSAGE
+                case '3':
+                    game.buy_medicine()
+                    output = cfg.MEDICINE_BOUGHT_MESSAGE
+                case '4':
+                    game.feed_tamagochi()
+                    output = cfg.FED_MESSAGE
+                case '5':
+                    game.heal_tamagochi()
+                    output = cfg.HEALED_MESSAGE
+                case '6':
+                    game.play_with_tamagochi()
+                    output = cfg.PLAYED_MESSAGE
+                case '7':
+                    game.rest_tamagochi()
+                    output = cfg.RESTED_MESSAGE
+                case '0':
+                    print(cfg.BYE_MESSAGE)
+                    break
+                case _:
+                    output = cfg.UNKNOWN_COMMAND_MESSAGE
+        except TamagochiIsGone as error:
+            print(error)
+            break
+        except GameError as error:
+            output = str(error)
 
 
 if __name__ == '__main__':

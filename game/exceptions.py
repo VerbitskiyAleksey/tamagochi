@@ -1,21 +1,33 @@
-"""Модуль с исключениями"""
+"""Модуль с исключениями игры."""
 
 
-class TamagochiIsGone(Exception):
-    """Ошибка при смерти тамагочи"""
+class GameError(Exception):
+    """Базовая ошибка игры."""
 
 
-class NotEnoughMoney(Exception):
-    """Ошибка когда не хватает монет для покупки"""
+class TamagochiIsGone(GameError):
+    """Ошибка при смерти тамагочи."""
 
 
-class NotEnoughEnergy(Exception):
-    """Ошибка когда тамагочи не хватает энергии для действия"""
+class NotEnoughMoney(GameError):
+    """Ошибка когда не хватает монет для покупки."""
 
 
-class EmptyMedicine(Exception):
-    """Ошибка когда лекарство полностью израсходовано"""
+class NotEnoughEnergy(GameError):
+    """Ошибка когда тамагочи не хватает энергии для действия."""
 
 
-class EmptyBag(Exception):
-    """Ошибка когда в сумке или магазине нет предметов"""
+class EmptyMedicine(GameError):
+    """Ошибка когда лекарство полностью израсходовано."""
+
+
+class EmptyBag(GameError):
+    """Ошибка когда в сумке или магазине нет предметов."""
+
+
+class InvalidChoice(GameError):
+    """Ошибка когда игрок ввёл неверный номер предмета."""
+
+
+class ActionCancelled(GameError):
+    """Ошибка когда игрок отменил выбор предмета."""
